@@ -19,6 +19,6 @@ An experimental project exploring spec-driven development across PMs, Experience
 claude mcp add --transport http Supernova-WeaveBrandExtended "https://mcp.supernova.io/mcp/ds/223070?datasetId=235993"
 claude mcp add --transport http plugin:figma:figma https://mcp.figma.com/mcp
 claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp
-claude mcp add editorial <python> <path-to>/mcp-editorial-service/server.py
-claude mcp add a11y <python> <path-to>/mcp-a11y-service/server.py
+claude mcp add editorial <python> <path-to>/mcp-editorial-service/server.py  # https://git.autodesk.com/hoa/mcp-editorial-service
+claude mcp add a11y <python> <path-to>/mcp-a11y-service/server.py              # https://github.com/alan-ho/mcp-a11y-service
 ```
