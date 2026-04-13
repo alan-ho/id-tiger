@@ -45,7 +45,7 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - This does not cover adult account management
 - This does not replace or modify the existing Autodesk identity/auth system — it is a management layer on top of it
 - Moderators cannot change account status (Suspend) — out of scope for this POC
-- Moderators can delete accounts from the list view — see User Story 4
+- Delete user functionality is out of scope for this POC — the button is present in the UI but non-functional (no-op)
 - Moderators cannot edit usernames
 - Bulk account actions are out of scope for v1
 
@@ -126,9 +126,9 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 ---
 
-### User Story 4 — Delete User (P4)
+### User Story 4 — Delete User UI (P4)
 
-**As a** moderator, I want to select one or more child accounts from the list and delete them so I can remove accounts that are no longer needed.
+**As a** moderator, I want to see a Delete user button in the list view that activates when I select accounts, so the interface is ready for delete functionality in a future release.
 
 **Requirements:**
 - Each row in the list must have a **checkbox** for selection
@@ -136,16 +136,13 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - The "Delete user" button must be **disabled** when 0 users are selected
 - The "Delete user" button must be **enabled** when ≥1 user is selected
 - The action bar must display the count of selected users (e.g. "2 selected")
-- Before deletion executes, a **confirmation dialog** must appear: "You are about to delete [n] user(s). This action cannot be undone. Do you want to continue?"
-- Upon confirmation, selected users are deleted and removed from the list
-- All deletion events must be logged with timestamp, moderator identity, and the list of deleted usernames
+- Clicking "Delete user" is a **no-op for this POC** — no action is taken, no dialog appears
+- A header checkbox must allow selecting all visible users at once
 
 **Acceptance Criteria:**
 - Given I am on the list view, then each row has a checkbox and "Delete user" is disabled
 - Given I select one or more users, then the action bar shows "[n] selected" and "Delete user" becomes enabled
-- Given I click "Delete user", then a confirmation dialog appears before any deletion occurs
-- Given I dismiss the confirmation dialog, then no deletion occurs and selections are preserved
-- Given I confirm the deletion, then the selected users are removed from the list and the deletion is logged
+- Given I click "Delete user", then nothing happens — no dialog, no deletion
 - Given I select all users via the header checkbox, then all visible users are selected
 
 ---
@@ -168,9 +165,9 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 | FR-012 | System MUST log all password reset events with timestamp and moderator identity |
 | FR-013 | System MUST comply with COPPA data handling requirements throughout |
 | FR-014 | System MUST display a checkbox on each row in the list view |
-| FR-015 | System MUST enable the "Delete user" button only when ≥1 user is selected |
-| FR-016 | System MUST display a confirmation dialog before executing a deletion |
-| FR-017 | System MUST log all deletion events with timestamp, moderator identity, and deleted usernames |
+| FR-015 | System MUST display a "Delete user" button in the action bar, enabled only when ≥1 user is selected |
+| FR-016 | System MUST display the count of selected users in the action bar (e.g. "2 selected") |
+| FR-017 | Clicking "Delete user" MUST be a no-op for this POC — no action, no dialog, no deletion |
 
 ---
 
