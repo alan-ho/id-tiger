@@ -22,9 +22,9 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 **Who is affected:** Moderators (teachers, parents, administrators) managing child Autodesk accounts, and the child users whose requests go unresolved due to friction.
 
-**What the problem is:** There is no centralized interface for moderators to view, manage, or take action on the child accounts they are responsible for. Password resets, account status changes, and access reviews all require manual, out-of-band coordination.
+**What the problem is:** There is no centralized interface for moderators to view, manage, or take action on the child accounts they are responsible for. Password resets require manual, out-of-band coordination.
 
-**Why it matters:** 
+**Why it matters:**
 - Moderators cannot efficiently fulfill their oversight responsibilities
 - Child users are blocked on basic account recovery tasks
 - Autodesk cannot demonstrate adequate COPPA compliance controls without auditable moderator tooling
@@ -34,16 +34,18 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 ## 3. Goals
 
-- Enable moderators to view and manage all child/student accounts they oversee from a single interface
-- Provide moderators with the ability to take key administrative actions: password resets, status changes, access reviews
+- Enable moderators to view all child/student accounts they oversee from a single interface
+- Provide moderators with the ability to perform password resets on behalf of child users
 - Ensure all functionality complies with COPPA and Autodesk child data protection requirements
-- Reduce time-to-resolution for child account issues
+- Reduce time-to-resolution for password reset requests
 
 ## 4. Non-Goals
 
 - This is not a child-facing interface — children do not interact with this tool directly
 - This does not cover adult account management
 - This does not replace or modify the existing Autodesk identity/auth system — it is a management layer on top of it
+- Moderators cannot change account status (Suspend / Delete) — out of scope for this POC
+- Moderators cannot edit usernames
 - Bulk account actions are out of scope for v1
 
 ---
@@ -68,36 +70,36 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - The list view has two tabs: **"By accounts"** (active) and **"By product"** (placeholder — out of scope for v1)
 - The "By accounts" tab must display the following for each managed user:
   - Username
-  - Status (Active / Suspended)
+  - Status (Active / Password requested)
   - Last Active information
-- **Constraint:** Only show users with Status = Active or Suspended — users with Status = Deleted must not appear in the list
+- All assigned users appear in the list regardless of status — no filtering applied
 - List must be sortable and searchable
 
 **Acceptance Criteria:**
-- Given I am a logged-in moderator, when I land on the dashboard, then I see only child accounts with Status = Active or Suspended
-- Given a child account has Status = Deleted, when I view the list, then that user does not appear
+- Given I am a logged-in moderator, when I land on the dashboard, then I see all child accounts I manage
+- Given a child has triggered a password reset request, when I view the list, then their status shows as "Password requested"
+- Given the list is populated, when I sort by any column, then the list reorders correctly
+- Given the list is populated, when I search by username, then only matching accounts are displayed
 
 ---
 
 ### User Story 2 — User Detail View (P2)
 
-**As a** moderator, **when I click on a user** in the list, I want to navigate to their detail page so I can review their usage and take administrative action.
+**As a** moderator, **when I click on a user** in the list, I want to navigate to their detail page so I can review their app usage and initiate a password reset if needed.
 
 **Requirements:**
 - Clicking a user in the list view must navigate to a detail page for that user
 - The detail page must display:
   - A list of all **Applications** the child has access to
   - The **Last Use Date** for each application
-- The detail page must include controls to perform the following actions on the user:
-  - **Reset the password**
-  - **Change Status to Suspended**
-  - **Change Status to Deleted**
+- The only moderator action available on the detail page is **Reset Password**
+- Moderators cannot edit the username
+- *(Note: Delete Account button — out of scope for this POC. To be confirmed with XD.)*
 
 **Acceptance Criteria:**
 - Given I am on the user list, when I click a user, then I am taken to their detail page
 - Given I am on the detail page, then I can see all apps the child accesses and when they last used each
 - Given I am on the detail page, when I click Reset Password, then the password reset flow is initiated
-- Given I am on the detail page, when I change the status, then the change is reflected immediately in the list view
 
 ---
 
@@ -107,18 +109,20 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 **Requirements:**
 - Clicking Reset Password opens a **drawer** with two fields: "Set password" and "Reenter password"
-- The drawer must include **inline validation** (e.g. passwords must match, minimum strength requirements)
-- Upon successful reset, a **handoff dialog** must be displayed informing the moderator:
-  - The password has been successfully reset for [username]
-  - The moderator is responsible for sharing the new password with the child — this step is not automated
+- The drawer must include **inline validation** (passwords must match, minimum strength requirements)
+- Upon successful reset:
+  - The child's status automatically reverts to **Active**
+  - A **handoff dialog** is displayed informing the moderator:
+    - The password has been successfully reset for [username]
+    - The moderator is responsible for sharing the new password with the child — this step is not automated
 - All password reset events must be logged with timestamp and moderator identity (audit trail)
 
 **Acceptance Criteria:**
 - Given I click Reset Password, then a drawer opens with "Set password" and "Reenter password" fields
 - Given I enter mismatched passwords, then inline validation prevents submission and shows an error
-- Given I submit a valid password, then the reset is applied and a handoff dialog appears reminding me to share the password with the child
+- Given I submit a valid password, then the reset is applied, the user's status reverts to Active, and a handoff dialog appears
 - Given I complete the flow, then the reset event is logged with my identity and a timestamp
-- Given I close the drawer without submitting, then no reset occurs and the user's password is unchanged
+- Given I close the drawer without submitting, then no reset occurs and the user's status is unchanged
 
 ---
 
@@ -126,26 +130,26 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 | ID | Requirement |
 |---|---|
-| FR-001 | System MUST display a list of all child accounts associated with the logged-in moderator upon login |
+| FR-001 | System MUST display all child accounts associated with the logged-in moderator upon login |
 | FR-002 | System MUST display Username, Status, and Last Active for each account in the list |
-| FR-003 | System MUST exclude users with Status = Deleted from the list view |
+| FR-003 | System MUST support sorting and searching within the account list |
 | FR-004 | System MUST allow moderators to navigate to a per-user detail page from the list |
 | FR-005 | System MUST display all applications a child user has access to, with Last Use Date per app |
-| FR-006 | System MUST allow moderators to reset a child user's password |
-| FR-007 | System MUST allow moderators to change a child user's status to Suspended |
-| FR-008 | System MUST allow moderators to change a child user's status to Deleted |
-| FR-009 | System MUST open a drawer with "Set password" and "Reenter password" fields when moderator initiates a password reset |
-| FR-010 | System MUST comply with COPPA data handling requirements throughout |
-| FR-011 | System MUST validate that both password fields match before allowing submission |
-| FR-012 | System MUST enforce minimum password strength requirements with inline validation |
-| FR-013 | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
+| FR-006 | System MUST allow moderators to initiate a password reset from the detail page |
+| FR-007 | System MUST open a drawer with "Set password" and "Reenter password" fields when a password reset is initiated |
+| FR-008 | System MUST validate that both password fields match before allowing submission |
+| FR-009 | System MUST enforce minimum password strength requirements with inline validation |
+| FR-010 | System MUST automatically update the user's status to Active upon successful password reset |
+| FR-011 | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
+| FR-012 | System MUST log all password reset events with timestamp and moderator identity |
+| FR-013 | System MUST comply with COPPA data handling requirements throughout |
 
 ---
 
 ## 8. Non-Functional Requirements
 
 - **Compliance:** All data handling must comply with COPPA and Autodesk child data protection policies
-- **Auditability:** All moderator actions (status changes, password resets) must be logged with timestamp and moderator identity
+- **Auditability:** All moderator actions (password resets) must be logged with timestamp and moderator identity
 - **Access control:** Moderators must only be able to view and act on accounts they are explicitly assigned to oversee — no cross-moderator visibility
 - **Performance:** User list and detail pages must load within 3 seconds under normal conditions
 
@@ -156,8 +160,8 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 | Metric | Target |
 |---|---|
 | Moderator time-to-resolution for password reset requests | Reduced from days (out-of-band) to under 5 minutes |
-| % of moderators who can complete a status change without support | 90%+ on first attempt |
-| Reduction in support tickets related to child account management | 50% reduction within 60 days of launch |
+| % of moderators who can complete a password reset without support | 90%+ on first attempt |
+| Reduction in support tickets related to child password resets | 50% reduction within 60 days of launch |
 | COPPA audit pass rate | 100% — all moderator actions logged and auditable |
 
 ---
@@ -167,8 +171,11 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - Moderator-to-child account relationships already exist in the Autodesk identity system and can be queried
 - Authentication for moderators uses existing Autodesk Identity platform - AuthZ/AuthN/SSO - no new auth system required
 - App access data (which apps a child uses + last use date) is available via existing Autodesk APIs
+- "Password requested" status is triggered by the child through their product — the mechanism is out of scope for this application
 - Mobile support is out of scope for v1 — web only
 - The MVP supports English and Korean — language detection is browser-based
+- Bulk account actions are out of scope for v1
+- Autodesk Admin audit access is out of scope for v1
 
 ---
 
@@ -178,6 +185,4 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 |---|---|---|---|
 | 1 | What is the moderator assignment model? How does Autodesk track which moderators oversee which children? | Engineering | Open |
 | 2 | Are there legal constraints on what moderators can see (e.g., can they see app usage data under COPPA)? | Legal | Open |
-| 3 | What happens to a child's data when status is changed to Deleted — soft delete or hard delete? | Legal / Engineering | Open |
-| 4 | Is "Deleted" a reversible status or permanent? | PM / Legal | Open |
-| 5 | Which team owns the password reset API — does it support app-level scope today? | Engineering | Open |
+| 3 | Which team owns the password reset API? | Engineering | Open |
