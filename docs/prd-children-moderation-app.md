@@ -65,7 +65,8 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 **As a** moderator, **when I log in**, I want to see an immediate list of all child/student accounts I manage so I can quickly assess their status.
 
 **Requirements:**
-- The list must display the following for each managed user:
+- The list view has two tabs: **"By accounts"** (active) and **"By product"** (placeholder — out of scope for v1)
+- The "By accounts" tab must display the following for each managed user:
   - Username
   - Status (Active / Suspended)
   - Last Active information
@@ -102,24 +103,22 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 ### User Story 3 — Password Reset: Flow & Moderator Handoff (P3)
 
-**As a** moderator resetting a child user's password, I want a clear, guided reset flow with an explicit reminder that I am responsible for sharing the new password with the child so that the reset is completed safely and the child is not locked out.
+**As a** moderator resetting a child user's password, I want to set a new password myself via a guided drawer, with inline validation and an explicit reminder that I am responsible for sharing the new password with the child.
 
 **Requirements:**
-- Before the reset executes, the system must display a **confirmation dialog**: "You are about to reset the password for [username]. This will affect all Autodesk products. Do you want to continue?"
-- Upon confirming, the system generates a new password and displays it — **masked by default**
-- Moderator must be able to **toggle visibility** (show/hide) on the new password
-- A **copy to clipboard** button must be available alongside the password
+- Clicking Reset Password opens a **drawer** with two fields: "Set password" and "Reenter password"
+- The drawer must include **inline validation** (e.g. passwords must match, minimum strength requirements)
 - Upon successful reset, a **handoff dialog** must be displayed informing the moderator:
   - The password has been successfully reset for [username]
   - The moderator is responsible for sharing the new password with the child — this step is not automated
 - All password reset events must be logged with timestamp and moderator identity (audit trail)
 
 **Acceptance Criteria:**
-- Given I click Reset Password, then a confirmation dialog appears before any action is taken
-- Given I confirm the reset, then the new password is shown masked by default with a show/hide toggle and copy button
-- Given the reset is successful, then a handoff dialog appears reminding me to share the password with the child user
+- Given I click Reset Password, then a drawer opens with "Set password" and "Reenter password" fields
+- Given I enter mismatched passwords, then inline validation prevents submission and shows an error
+- Given I submit a valid password, then the reset is applied and a handoff dialog appears reminding me to share the password with the child
 - Given I complete the flow, then the reset event is logged with my identity and a timestamp
-- Given I dismiss the confirmation dialog, then no reset occurs and the user's password is unchanged
+- Given I close the drawer without submitting, then no reset occurs and the user's password is unchanged
 
 ---
 
@@ -135,12 +134,11 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 | FR-006 | System MUST allow moderators to reset a child user's password |
 | FR-007 | System MUST allow moderators to change a child user's status to Suspended |
 | FR-008 | System MUST allow moderators to change a child user's status to Deleted |
-| FR-009 | System MUST display a confirmation dialog before executing a password reset |
+| FR-009 | System MUST open a drawer with "Set password" and "Reenter password" fields when moderator initiates a password reset |
 | FR-010 | System MUST comply with COPPA data handling requirements throughout |
-| FR-011 | System MUST display the new password masked by default after a successful reset |
-| FR-012 | System MUST provide a show/hide toggle for the new password |
-| FR-013 | System MUST provide a copy-to-clipboard button for the new password |
-| FR-014 | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
+| FR-011 | System MUST validate that both password fields match before allowing submission |
+| FR-012 | System MUST enforce minimum password strength requirements with inline validation |
+| FR-013 | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
 
 ---
 
@@ -170,7 +168,7 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - Authentication for moderators uses existing Autodesk Identity platform - AuthZ/AuthN/SSO - no new auth system required
 - App access data (which apps a child uses + last use date) is available via existing Autodesk APIs
 - Mobile support is out of scope for v1 — web only
-- The MVP launch targets US region — and does not require localization for v1
+- The MVP supports English and Korean — language detection is browser-based
 
 ---
 
