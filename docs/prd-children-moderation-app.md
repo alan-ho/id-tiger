@@ -1,9 +1,9 @@
 # PRD — Children Moderation Application
 
 **Product Area:** Access — Identity & Compliance  
-**Author:** [PM Name]  
+**Author:** Mrinal Shanker  
 **Status:** Draft  
-**Last Updated:** 2026-04-11  
+**Last Updated:** 2026-04-13  
 **Stakeholders:** Access PM, XD, Engineering, Legal/Compliance  
 
 ---
