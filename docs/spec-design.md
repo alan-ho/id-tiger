@@ -92,12 +92,17 @@ Page Body (slate-100 background, px 72px)
   │   ├── Avatar (blue initials) + [username] (headline-larger)
   │   ├── "Last active [date]" (caption, right-aligned)
   │   └── "Delete Account" button (outlined, right-aligned)
-  └── "Sign in with Autodesk" card
-      ├── Card header: title + description
-      ├── Horizontal divider
-      ├── Username row: label | vertical divider | value | edit icon
-      ├── Horizontal divider
-      └── Password row: label | vertical divider | masked value | [badge] | edit icon
+  ├── "Sign in with Autodesk" card
+  │   ├── Card header: title + description
+  │   ├── Horizontal divider
+  │   ├── Username row: label | vertical divider | value | edit icon
+  │   ├── Horizontal divider
+  │   └── Password row: label | vertical divider | masked value | [badge] | edit icon
+  └── "Apps" card
+      ├── Card header: "Apps" (headline-large)
+      └── Table
+          ├── Columns: [Application] [Last use date]
+          └── Rows: app icon + app name | date (or "Never")
 ```
 
 ### 2.4 Screen 3 — Password Drawer (overlay state of Screen 2)
@@ -181,6 +186,13 @@ All components sourced from Weave Brand (`@weave-brand/core`, `@weave-brand/icon
 | Row value | `Typography` | `@mui/material` | `variant="body-copy-medium"` |
 | Edit icon | `IconButton` + `Edit` | `@mui/material`, `@weave-brand/icon` | `variant="quiet" size="small"` — inert placeholder (spec A2) |
 | Password requested badge | Custom pill | — | `background: status-color/info/default` (#1278AF), `border-radius/pill` (1000px), `label-12\|14-semi-bold` |
+| Apps card container | — | — | Same card style as credential card: `border-color/divider/medium`, 16px radius, `background-color/surface/100` |
+| Apps card heading | `Typography` | `@mui/material` | `variant="headline-large"` |
+| Apps table | `Table`, `TableHead`, `TableBody`, `TableRow`, `TableCell` | `@mui/material` | No outer border — uses card container |
+| Apps table header cell | `TableCell` | `@mui/material` | `variant="head" size="small"` |
+| App icon | `SvgIcon` (product icon) | `@weave-brand/icon` or product-specific icon | 24×24; `aria-hidden="true"` — decorative only |
+| App name | `Typography` | `@mui/material` | `variant="body-copy-medium"` — inline after icon |
+| Last use date cell | `Typography` | `@mui/material` | `variant="body-copy-medium"` — formatted `Mon DD, YYYY`; "Never" when no usage recorded |
 
 ### 3.4 Screen 3 — Password Drawer
 
@@ -239,12 +251,13 @@ All components sourced from Weave Brand (`@weave-brand/core`, `@weave-brand/icon
 - Username row: current username in read-only mode; edit icon visible.
 - Password row: masked value `**************` (14 asterisks, regardless of actual length); no badge; edit icon visible.
 - "Delete Account" button: enabled.
+- Apps table: displays all applications the child has access to, one row per app, showing the app name and last use date. If a child has never used an app, the last use date cell shows "Never".
 
 ### 4.6 Kid Account Detail — Loading
 
-- Skeleton placeholders replace: page title (username), last active date, username row value, password row value.
+- Skeleton placeholders replace: page title (username), last active date, username row value, password row value, and the apps table rows.
 - "Delete Account" button: disabled.
-- Card headings ("Sign in with Autodesk") render immediately — static strings.
+- Card headings ("Sign in with Autodesk", "Apps") render immediately — static strings.
 
 ### 4.7 Kid Account Detail — Password Requested
 
@@ -368,11 +381,20 @@ And the page title shows the child's username in headline-larger typography
 And the last active date is shown to the right of the username in caption typography
 And "Delete Account" is visible as an outlined button at the far right of the header row
 And the "Sign in with Autodesk" card shows username and masked password rows
+And the "Apps" card shows a table listing all apps the child has access to, with a "Last use date" column for each
+```
+
+```
+Given the child has access to one or more apps
+Then each app appears as a row in the Apps table with the app name and the last use date formatted as "Mon DD, YYYY"
+
+Given an app the child has access to has never been used
+Then the Last use date cell for that app shows "Never"
 ```
 
 ```
 Given the page is loading
-Then skeleton placeholders occupy: page title, last active date, username value, password value
+Then skeleton placeholders occupy: page title, last active date, username value, password value, and apps table rows
 And "Delete Account" is disabled
 ```
 
@@ -590,6 +612,10 @@ All strings below are final. Do not alter casing, punctuation, or phrasing witho
 | Password row label | `Password` | Bold weight |
 | Password sub-label | `(required)` | Regular weight, lower case |
 | Password badge | `Password requested` | Sentence case. Not "Password Requested". |
+| Apps card heading | `Apps` | Short title — do not use "Applications" |
+| Apps table column — app | `Application` | Title case |
+| Apps table column — date | `Last use date` | Sentence case |
+| Apps table — no usage | `Never` | Shown in Last use date cell when no usage recorded |
 
 ### 7.5 Password Drawer Copy
 
