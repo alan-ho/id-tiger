@@ -92,13 +92,14 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - Clicking a user in the list view must navigate to a detail page for that user
 - The detail page must display:
   - A list of all **Applications** the child has access to
-  - The **Last Use Date** for each application
+  - The **Last Use Date** for each application — displayed as **"Never"** if the child has not yet accessed that application
 - The only moderator action available on the detail page is **Reset Password**
 - Moderators cannot edit the username
 
 **Acceptance Criteria:**
 - Given I am on the user list, when I click a user, then I am taken to their detail page
 - Given I am on the detail page, then I can see all apps the child accesses and when they last used each
+- Given a child has never accessed an application, when I view the detail page, then the Last Use Date for that application shows "Never"
 - Given I am on the detail page, when I click Reset Password, then the password reset flow is initiated
 
 ---
@@ -155,7 +156,7 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 | FR-002 | System MUST display Username, Status, and Last Active for each account in the list |
 | FR-003 | System MUST support sorting and searching within the account list |
 | FR-004 | System MUST allow moderators to navigate to a per-user detail page from the list |
-| FR-005 | System MUST display all applications a child user has access to, with Last Use Date per app |
+| FR-005 | System MUST display all applications a child user has access to, with Last Use Date per app — shown as "Never" if the application has never been accessed |
 | FR-006 | System MUST allow moderators to initiate a password reset from the detail page |
 | FR-007 | System MUST open a drawer with "Set password" and "Reenter password" fields when a password reset is initiated |
 | FR-008 | System MUST validate that both password fields match before allowing submission |
