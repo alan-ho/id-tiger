@@ -9,7 +9,7 @@ Authoritative source for technical architecture decisions. Consult before specif
 
 ## UI Stack
 
-- **Components** — `@mui/material` (MUI v7) themed with `@weave-brand/core` at the app root.
+- **Components** — `@mui/material` (MUI v6.5.0^) themed with `@weave-brand/core` at the app root.
 - **Icons** — `@weave-brand/icon` wrapped in MUI `SvgIcon`. `@mui/icons-material` is prohibited.
 - **Avatar** — `@weave-mui/avatar`.
 - **Tokens** — semantic Weave Brand tokens (e.g. `background-color/brand`, `status-color/info/default`, `border-radius/pill`). Hardcoded hex values are prohibited unless a token value is explicitly confirmed in the design spec.

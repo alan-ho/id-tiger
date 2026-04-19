@@ -28,36 +28,51 @@ Follow-up TODOs: none.
 
 # COPPA Supervision Center Constitution
 
-> **Architecture reference:** Technical implementation details — language, build tooling,
-> mock API layer, and design system — are maintained in
-> [`docs/architecture.md`](../../docs/architecture.md).
-> When creating new features and writing specifications, consult that file for the current
-> state of project architecture. This constitution governs development workflow, behaviour
-> rules, and validation practices only.
+**Business requirements reference:** Use [`docs/prd-children-moderation-app.md`](../../docs/prd-children-moderation-app.md) as the source for the project desription from the product owner's perspective - scope, requirements, use-cases, system behavior, etc.
+**Architecture reference:** Technical implementation details — language, build tooling, mock API layer, and design system — are maintained in [`docs/architecture.md`](../../docs/architecture.md).
+When creating new features and writing specifications, consult those files for the current state of the project requirements and architecture. This constitution governs development workflow and validation practices only.
 
 ## Core Principles
 
-### I. COPPA Compliance & Audit Trail
+### I. UI development principles
 
-All features and data flows MUST comply with COPPA and Autodesk child data protection policies.
-Every moderator action that mutates account state MUST be auditable.
+- Prefer simple, readable code
+- When Figma views are provided, try as best as you can to achieve the implemented UI conformance to the Figma views. 
+- Assign unique and concise IDs or classes to the implemented components or elements, so I could easily find when reviewing the code in the browser
+- Keep components small and reusable
+- Prefer utility classes over custom CSS
 
-Rules:
-- Every mutating moderator action (password reset, account deletion) MUST be recorded with:
-  action type, timestamp (UTC), and authenticated moderator identity. In this mock-only phase,
-  the audit log MUST be written to the mock service layer so the contract is established before
-  the real API is wired in.
-- No child account data may be exposed to a moderator who is not explicitly assigned as that
-  account's supervisor — this is enforced at the mock service layer (not just in UI rendering).
-- The mock `accountsService` MUST reject requests for accounts outside the authenticated
-  moderator's assigned set with a simulated 403 response.
-- Moderators MUST NOT be able to edit usernames in this release (UI field is read-only).
-- Bulk delete and account suspension are out of scope for this POC — the UI placeholders
-  MUST be non-functional (no-ops), with no back-end call issued.
 
-*Rationale: COPPA violations carry regulatory risk for Autodesk. Establishing the audit
-contract in the mock layer ensures the real integration is compliant by design, not by
-retrofit.*
+*Design System — Weave Brand*
+- Components: `@mui/material` (MUI v7)
+- App theming: `@weave-brand/core`
+- Icons: `@weave-brand/icon` (never `@mui/icons-material`)
+- Avatar: `@weave-mui/avatar`
+- Always wrap icons with MUI's `SvgIcon` component
+- Use Weave and MUI components exclusively - no Tailwind, no vanilla HTML
+- Use design tokens for colors (e.g., `text-color.heavy`, `surface.300`)
+- Semantic Weave Brand tokens (e.g. `background-color/brand`, `status-color/info/default`, `border-radius/pill`)
+
+When implementing UI from figma, add the following requirements to the prompt and endforce them:
+Before implementing any UI component, consult Supernova MCP: 
+1. `get_design_system_component_list` — find component by name
+2. `get_design_system_component_detail` — metadata, status, linked resources
+3. `get_storybook_story_list` / `get_storybook_story_detail` — coded examples
+4. `get_documentation_page_list` / `get_documentation_page_content` — usage guidelines
+Load the relevant Weave skill before writing code.
+
+*Layout:* The layout model for all: navigation panel, header, body and footer, must be MUI's breakpoint-based with max-width (1296px) and auto-centering.
+*Fonts:* Artifakt font URLs:
+<link rel="preload" crossorigin="anonymous" as="font" type="font/woff2" href="https://swc.autodesk.com/pharmacopeia/fonts/ArtifaktElement/v1.0/WOFF2/Artifakt%20Element%20Regular.woff2">
+    <link rel="preload" crossorigin="anonymous" as="font" type="font/woff2" href="https://swc.autodesk.com/pharmacopeia/fonts/ArtifaktElement/v1.0/WOFF2/Artifakt%20Element%20Semi%20Bold.woff2">
+    <link rel="preload" crossorigin="anonymous" as="font" type="font/woff2" href="https://swc.autodesk.com/pharmacopeia/fonts/ArtifaktLegend/v1.0/WOFF2/Artifakt%20Legend%20Extra%20Bold.woff2">
+*Icon Sizing:* Icon color is controlled with `sx` `color` prop and size with `sx` `fontSize` prop on the `SvgIcon` component.
+**fontSize values:** `"small"`, `"medium"`, `"large"`, `"extra-large"`.
+
+
+*Important:* The Figma view as the source of truth. The styles and variables, used in Figma view, *MUST* override the Weave theme and MUI styles. 
+
+After creating or changing UI or react components, run /ui-code-review skill for finding and resolving the UI deviations.
 
 ### II. Accessibility — WCAG 2.2 AA
 
@@ -116,11 +131,6 @@ The following gates MUST be passed in order. All are blockers — no gate may be
    explicitly included.
 
 ## Governance
-
-This constitution supersedes all other practices, conventions, and informal agreements within
-the id-tiger repository. It is the authoritative ruleset for development workflow, behaviour
-rules, and validation practices. For technical architecture decisions, see
-[`docs/architecture.md`](../../docs/architecture.md).
 
 **Amendment procedure:**
 1. Propose the change in a spec amendment (any faction may initiate).

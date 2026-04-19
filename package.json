@@ -10,12 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^6.5.0",
+    "@weave-brand/core": "^0.12.28",
+    "@weave-brand/icon": "^0.24.0",
+    "@weave-mui/avatar": "^4.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@vitejs/plugin-react": "^6.0.1",
+    "@vitejs/plugin-react": "^5.2.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",

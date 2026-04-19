@@ -9,10 +9,14 @@ lerna-debug.log*
 
 node_modules
 dist
+build
+coverage
 dist-ssr
 *.local
+.env*
 
 # Editor directories and files
+.vscode
 .idea
 .DS_Store
 *.suo
@@ -20,3 +24,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.gstack/

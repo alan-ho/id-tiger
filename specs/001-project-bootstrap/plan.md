@@ -12,7 +12,7 @@ directory structure. Delivers a `README.md` with runnable instructions.
 ## Technical Context
 
 **Language/Version**: JavaScript (ES2022) + JSX — no TypeScript
-**Primary Dependencies**: Vite 5.x, React 18.x, React DOM 18.x
+**Primary Dependencies**: Vite 8.x, React 18.x, React DOM 18.x
 **Storage**: N/A — no data storage in this release
 **Testing**: N/A — no tests required for bootstrap
 **Target Platform**: Web browser (desktop), localhost dev server

@@ -4,7 +4,7 @@
 **Figma source:** [COPPA — Moderator's Platform](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform)  
 **Status:** Draft  
 **Author:** Alan Ho  
-**Last updated:** 2026-04-10
+**Last updated:** 2026-04-18
 
 | Screen | Node | Route |
 |---|---|---|
@@ -23,7 +23,7 @@ The COPPA Supervision Center allows moderators to manage child accounts under th
 
 ```
 User Management (list)
-  └── Click → row (Forward icon)
+  └── Click row (Forward icon)
        └── Kid Account Detail
             └── Click edit icon (Password row)
                  └── Password Drawer (right panel)
@@ -46,272 +46,104 @@ The moderator maps to Autodesk's **End User persona** — the doer, on tight dea
 
 All static UI copy must be authored and maintained in both **English** and **Korean**. The displayed language is determined automatically by the browser's language setting — there is no manual language switcher in the UI. English is the default for all other languages.
 
-**Design implication:** Copy annotations in this spec are written in English. The Korean equivalents are a translation concern and do not affect layout or visual design — translated strings are expected to be comparable in length.
+**Design implication:** Copy annotations in this spec are written in English. Korean equivalents are a translation concern and do not affect layout or visual design — translated strings are expected to be comparable in length.
 
 ---
 
-## 2. Page Structure
+## 2. Figma Divergences
 
-### 2.1 Shared Shell (all screens)
+These are deliberate decisions that differ from what Figma currently shows. Do not revert to the Figma values.
 
-```
-Universal Header (black, full width)
-  └── Autodesk logo | Search field | Cart | Notifications | Locale (US) | Moderator avatar
-Primary Navigation (dark, full width)
-  └── "Supervision Center" (app title) | User management (tab)
-```
-
-The primary nav "User management" tab is the active state across all three screens. The active tab shows a white bottom border (`border-b-2`) and a ghost-activated background (`background-color/ghost/activated/default`).
-
-> **Note:** The Figma design shows additional tabs (Activity tracking, Feature, Feature) as unfilled placeholder slots. These are not rendered in this release — only the "Supervision Center" title and the "User management" tab are shown.
-
-### 2.2 Screen 1 — User Management
-
-```
-Page Body (slate-100 background, px 72px)
-  ├── Breadcrumbs: 🏠 / User management
-  ├── Page Header
-  │   └── "User management" (headline-larger)
-  ├── View tabs: [By accounts] [By product]
-  ├── Action bar
-  │   ├── "{n} selected" count
-  │   ├── "Delete user" button (outlined, disabled when 0 selected)
-  │   └── Search field (right-aligned)
-  └── Table
-      ├── Columns: [checkbox] [User (n)] [Last active ↓] [Status] [→]
-      ├── Rows (up to 15 visible): checkbox | avatar+username | date | status badge | forward arrow
-      └── Pagination: ← 1 2 3 … 10 →
-```
-
-### 2.3 Screen 2 — Kid Account Detail
-
-```
-Page Body (slate-100 background, px 72px)
-  ├── Breadcrumbs: 🏠 / User management (link) / [username]
-  ├── Page Header
-  │   ├── Avatar (blue initials) + [username] (headline-larger)
-  │   ├── "Last active [date]" (caption, right-aligned)
-  │   └── "Delete Account" button (outlined, right-aligned)
-  ├── "Sign in with Autodesk" card
-  │   ├── Card header: title + description
-  │   ├── Horizontal divider
-  │   ├── Username row: label | vertical divider | value | edit icon
-  │   ├── Horizontal divider
-  │   └── Password row: label | vertical divider | masked value | [badge] | edit icon
-  └── "Apps" card
-      ├── Card header: "Apps" (headline-large)
-      └── Table
-          ├── Columns: [Application] [Last use date]
-          └── Rows: app icon + app name | date (or "Never")
-```
-
-### 2.4 Screen 3 — Password Drawer (overlay state of Screen 2)
-
-```
-Screen 2 (dimmed by 50% black overlay)
-  └── Side panel (360px, slides in from right)
-      ├── Panel header: "Password" | × close
-      └── Panel body
-          ├── Instruction text
-          ├── "Set password" field (with show/hide toggle + inline requirements)
-          ├── "Reenter password" field (with show/hide toggle)
-          ├── "Save" button (contained, full width)
-          └── "Cancel" button (outlined, full width)
-```
+- **Placeholder nav tabs:** The Figma primary nav shows additional tabs (Activity tracking, Feature, Feature). These are **not rendered** in this release — only the "Supervision Center" title and the "User management" tab are shown.
+- **Child avatar color:** Figma shows `color/blue/500/100` (#0696D7). That value fails WCAG AA (3.7:1 on white). Use `color/blue/700/100` instead (confirmed ≥4.5:1).
+- **Password instruction text:** Figma currently reads "8 characters". The authoritative value is **10 characters** — see §7 for the correct string.
+- **⚠️ Open gap — "Pending approval" tab:** Figma shows three view tabs on the User Management screen: "By accounts", "By product", and "Pending approval". The spec lists only two. Clarify with Alan whether "Pending approval" renders in this release or is a placeholder (like the nav tabs).
 
 ---
 
-## 3. Component Inventory
+## 3. Non-Standard Implementation Notes
 
-All components sourced from Weave Brand (`@weave-brand/core`, `@weave-brand/icon`) and MUI (`@mui/material`) with the Weave Brand theme. Custom implementations require documented design approval.
+Layout, component names, and standard props are derivable from Figma and Weave docs. The notes below cover decisions that are not.
 
-### 3.1 Shared Shell
+### Quirks and overrides
 
-| UI element | Component | Import | Props / Notes |
-|---|---|---|---|
-| Autodesk logo | `ProductLockup` | `@weave-brand/core/components` | `lockupMode="html" genericIcon="no-generic" productName="Autodesk" size="headline-small"` |
-| Search field | `search` (Weave Brand) | Weave Brand | [docs](https://weave-brand.autodesk.com/latest/components/search-2DZoG0PN) |
-| Search icon | `SvgIcon` + `Search` | `@mui/material`, `@weave-brand/icon` | `<SvgIcon><Search /></SvgIcon>` |
-| Cart icon | `SvgIcon` + `CartFull` | `@mui/material`, `@weave-brand/icon` | — |
-| Notifications icon | `Notification` | `@weave-brand/icon` | `<Notification />` |
-| Globe icon | `SvgIcon` + `Globe` | `@mui/material`, `@weave-brand/icon` | — |
-| Moderator avatar | `Avatar` (default export) | `@weave-mui/avatar` | `size="S"`, `bgcolor: tokens.color.moderatorAvatar` → `color/iris/500/100` (#5F60FF) |
-| Breadcrumbs | `breadcrumbs` | Weave Brand stable | [docs](https://weave-brand.autodesk.com/latest/components/breadcrumbs-hWDzlsri-hWDzlsri) |
-| Home icon (breadcrumb) | `SvgIcon` + `Home` | `@mui/material`, `@weave-brand/icon` | Icon only, no visible text |
-| Breadcrumb link | `Link` | `@mui/material` | `<Link href="..." underline="hover">` |
+- **`Tabs` must use `variant="scrollable"`** — `appearance="quiet" variant="scrollable" scrollButtons={false}`. The quiet bottom border does not render without `variant="scrollable"` due to a Weave/MUI internal requirement.
+- **Child avatar background is `color/blue/700/100`** (not 500) — accessibility override; see §2.
+- **Row forward arrow is an anchor:** `<IconButton component="a" variant="quiet" size="medium">` — renders as `<a>` for semantic navigation, not a `<button>`.
+- **Panel header background is `'background.paper'`** (MUI theme token), not `#fff` — required for future dark-mode compatibility.
+- **Password masked value is always 14 asterisks (`**************`)**, regardless of actual password length.
 
-### 3.2 Screen 1 — User Management
+### Custom components
 
-| UI element | Component | Import | Props / Notes |
-|---|---|---|---|
-| Page heading | `Typography` | `@mui/material` | `variant="headline-larger"` |
-| View tabs | `Tabs` + `Tab` | `@mui/material` | `appearance="quiet" variant="scrollable" scrollButtons={false} orientation="horizontal"` — `variant="scrollable"` is required for the quiet bottom border to render correctly |
-| "{n} selected" count | `Typography` | `@mui/material` | `variant="body-copy-medium"` |
-| Delete user button | `Button` | `@mui/material` | `variant="outlined" size="medium"` — disabled when 0 rows selected |
-| Action bar search | Search (Weave Brand) | Weave Brand | Right-aligned in action bar |
-| Table | `Table`, `TableCell` | `@mui/material` | [docs](https://weave-brand.autodesk.com/latest/components/table-bdLZzX1O-bdLZzX1O) |
-| Table header cell | `TableCell` | `@mui/material` | `variant="head" size="small"` |
-| Select-all checkbox | `Checkbox` | `@mui/material` | In header row |
-| Row checkbox | `Checkbox` | `@mui/material` | `size="small"` per row |
-| Sort icon | `SvgIcon` + `Down` | `@mui/material`, `@weave-brand/icon` | "Last active" column header |
-| Row avatar (child) | `Avatar` (default export) | `@weave-mui/avatar` | `size="S"`, `bgcolor: tokens.color.childAvatar` → `color/blue/700/100` |
-| Status badge — Password requested | `Chip` (via `StatusBadge` component) | `@mui/material` | Custom pill: `bgcolor: tokens.color.infoBadge`, `borderRadius: tokens.border.pill`, `color: 'background.paper'` |
-| Status badge — Approval pending | `Chip` (via `StatusBadge` component) | `@mui/material` | Custom pill: error colour |
-| Status badge — Active | `Chip` (via `StatusBadge` component) | `@mui/material` | Custom pill: success colour |
-| Status badge — Inactive | `Chip` (via `StatusBadge` component) | `@mui/material` | Custom pill: no fill |
-| Row forward icon | `IconButton` + `Forward` | `@mui/material`, `@weave-brand/icon` | `component="a" variant="quiet" size="medium"` — renders as `<a>` for semantic nav |
-| Empty state pictogram | `UserInsights` | `@weave-brand/icon/pictograms` | `<UserInsights />` — centred, no wrapping `SvgIcon` needed |
-| Empty state heading | `Typography` | `@mui/material` | `variant="headline-small"` |
-| Empty state body | `Typography` | `@mui/material` | `variant="body-copy-medium"` |
-| Pagination prev | `IconButton` | `@mui/material` | `variant="quiet" size="small"` + `CaretLeft` icon |
-| Pagination next | `IconButton` | `@mui/material` | `variant="quiet" size="small"` + `CaretRight` icon |
-| CaretLeft icon | `SvgIcon` + `CaretLeft` | `@mui/material`, `@weave-brand/icon/ui-controls` | — |
-| CaretRight icon | `SvgIcon` + `CaretRight` | `@mui/material`, `@weave-brand/icon/ui-controls` | — |
+- **`StatusBadge`** — custom wrapper around MUI `Chip`. Not a Weave component. Four variants: `info` (Password requested), `error` (Approval pending), `success` (Active), `default/no-fill` (Inactive).
+- **`SetPasswordInput`** — custom component. Implements `FormControl` + `Input` with show/hide toggle and inline requirements checklist. Not a Weave or MUI primitive.
+- **Password fields use `FormControl` + `Input`, not `TextField`** — per Weave Brand rules. Applies to both "Set password" and "Reenter password" fields.
 
-### 3.3 Screen 2 — Kid Account Detail
+### Non-obvious icon imports
 
-| UI element | Component | Import | Props / Notes |
-|---|---|---|---|
-| Page avatar (child) | `Avatar` (default export) | `@weave-mui/avatar` | `size="L"`, `bgcolor: tokens.color.childAvatar` → `color/blue/700/100` (≥4.5:1 on white — confirmed) |
-| Page username | `Typography` | `@mui/material` | `variant="headline-larger"` |
-| Last active date | `Typography` | `@mui/material` | `variant="caption"` |
-| Delete Account button | `Button` | `@mui/material` | `variant="outlined" size="medium"` |
-| Card container | — | — | `border-color/divider/medium`, 16px radius, `background-color/surface/100` |
-| Card heading | `Typography` | `@mui/material` | `variant="headline-large"` |
-| Card description | `Typography` | `@mui/material` | `variant="body-copy-medium"` |
-| Horizontal divider | `horizontal` | Weave Brand stable | [docs](https://weave-brand.autodesk.com/latest/components/divider-CPjJecIB-CPjJecIB) |
-| Row label | `Typography` | `@mui/material` | `variant="headline-smaller"` |
-| Row sub-label "(required)" | `Typography` | `@mui/material` | `variant="body-copy-small"` |
-| Vertical divider | `vertical` | Weave Brand stable | [docs](https://weave-brand.autodesk.com/latest/components/divider-CPjJecIB-CPjJecIB) |
-| Row value | `Typography` | `@mui/material` | `variant="body-copy-medium"` |
-| Edit icon | `IconButton` + `Edit` | `@mui/material`, `@weave-brand/icon` | `variant="quiet" size="small"` — inert placeholder (spec A2) |
-| Password requested badge | Custom pill | — | `background: status-color/info/default` (#1278AF), `border-radius/pill` (1000px), `label-12\|14-semi-bold` |
-| Apps card container | — | — | Same card style as credential card: `border-color/divider/medium`, 16px radius, `background-color/surface/100` |
-| Apps card heading | `Typography` | `@mui/material` | `variant="headline-large"` |
-| Apps table | `Table`, `TableHead`, `TableBody`, `TableRow`, `TableCell` | `@mui/material` | No outer border — uses card container |
-| Apps table header cell | `TableCell` | `@mui/material` | `variant="head" size="small"` |
-| App icon | `SvgIcon` (product icon) | `@weave-brand/icon` or product-specific icon | 24×24; `aria-hidden="true"` — decorative only |
-| App name | `Typography` | `@mui/material` | `variant="body-copy-medium"` — inline after icon |
-| Last use date cell | `Typography` | `@mui/material` | `variant="body-copy-medium"` — formatted `Mon DD, YYYY`; "Never" when no usage recorded |
+```tsx
+import { Search, Edit, Globe, CartFull, Home, Forward, Cross, Visible, Circle, Notification } from "@weave-brand/icon";
+import { CaretLeft, CaretRight, Circle } from "@weave-brand/icon/ui-controls";
+import { UserInsights } from "@weave-brand/icon/pictograms"; // no SvgIcon wrapper needed
+```
 
-### 3.4 Screen 3 — Password Drawer
-
-| UI element | Component | Import | Props / Notes |
-|---|---|---|---|
-| Overlay | — | — | `background-color/black/50` (rgba(0,0,0,0.5)) |
-| Side panel | — | — | 360px wide, `background: tint/slate.100` |
-| Panel header | — | — | `bgcolor: 'background.paper'` (MUI theme token, not `#fff`), bottom border `border-color/divider/light` |
-| Panel title | `Typography` | `@mui/material` | `variant="headline-small"` |
-| Close button | `IconButton` + `Cross` | `@mui/material`, `@weave-brand/icon` | `variant="quiet" size="small"` — dismisses drawer |
-| Instruction text | `Typography` | `@mui/material` | `variant="body-copy-small"` |
-| Set password field | `SetPasswordInput` (custom) | Custom | FormControl + Input with show/hide toggle + inline requirements list |
-| Password visibility toggle | `IconButton` + `Visible` | `@mui/material`, `@weave-brand/icon` | `variant="quiet"` inside `InputAdornment` |
-| Requirements list | — | Custom | "A password must include:" + 4 requirement items with `Circle` icon |
-| Requirement icon | `Circle` | `@weave-brand/icon/ui-controls` | Unfilled → filled as each requirement is met; color: `'success.main'` when met, `'text.disabled'` when unmet — never hardcoded hex |
-| Reenter password field | `FormControl` + `Input` | `@mui/material` | `type="password"` + visibility toggle |
-| Save button | `Button` | `@mui/material` | `variant="contained" size="medium"` — full width |
-| Cancel button | `Button` | `@mui/material` | `variant="outlined" size="medium"` — full width |
+- `Circle` (requirement checklist icon): color must come from MUI theme tokens — `'success.main'` when met, `'text.disabled'` when unmet. Never hardcode hex values.
 
 ---
 
 ## 4. States
 
-### 4.1 User Management — Default
+Visual appearance for all states is in Figma. The notes below cover behavioral rules not visible there.
 
-- Table displays all child accounts for the moderator, sorted by Last active (descending).
-- "0 selected" count shown; "Delete user" button is disabled.
-- Each row shows: avatar with initials, username, last active date, status badge, forward arrow.
-- Status badge variants in use: "Password requested" (info/blue), "Approval pending" (error/red), "Active" (success/green), "Inactive" (no color).
-- Pagination visible; current page is page 1.
+### 4.1 User Management — Loading
 
-### 4.2 User Management — Loading
-
+- Action bar (search field + buttons) renders **immediately** — do not skeleton it.
 - Skeleton placeholders replace: page heading, table rows.
-- Action bar renders immediately (search field + buttons).
-- "Delete user" button disabled.
+- "Delete user" button disabled during load.
 
-### 4.3 User Management — Rows Selected
+### 4.2 User Management — Empty State
 
-- Checkbox(es) checked for one or more rows.
-- "{n} selected" count updates to reflect selection.
-- "Delete user" button becomes enabled.
+Table, action bar, and pagination are not rendered. Visual: [Figma node 121:30174](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=121-30174&m=dev).
 
-### 4.4 User Management — Empty State
+### 4.3 Kid Account Detail — Default
 
-- No child accounts associated with the moderator.
-- Table, action bar, and pagination are not rendered.
-- A centred empty state replaces the table area:
-  - Pictogram: `UserInsights` (from `@weave-brand/icon/pictograms`)
-  - Heading: "You have no child user linked" (`Typography variant="headline-small"`)
-  - Body: "There is no record of child that's linked to your Autodesk account." (`Typography variant="body-copy-medium"`)
-- Figma: [node 121:30174](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=121-30174&m=dev)
+- Password row masked value: always **14 asterisks**, regardless of actual password length.
+- Edit icon on password row is **visible but inert** in this release — clicking it opens the Password Drawer (spec A2 placeholder note in Figma is incorrect; the icon is interactive).
 
-### 4.5 Kid Account Detail — Default
+### 4.4 Kid Account Detail — Loading
 
-- Username row: current username in read-only mode; edit icon visible.
-- Password row: masked value `**************` (14 asterisks, regardless of actual length); no badge; edit icon visible.
-- "Delete Account" button: enabled.
-- Apps table: displays all applications the child has access to, one row per app, showing the app name and last use date. If a child has never used an app, the last use date cell shows "Never".
+- Card headings ("Sign in with Autodesk", "Apps") render **immediately** — they are static strings.
+- Skeleton placeholders replace: page title (username), last active date, username row value, password row value, apps table rows.
+- "Delete Account" button disabled during load.
 
-### 4.6 Kid Account Detail — Loading
+### 4.5 Kid Account Detail — Password Requested
 
-- Skeleton placeholders replace: page title (username), last active date, username row value, password row value, and the apps table rows.
-- "Delete Account" button: disabled.
-- Card headings ("Sign in with Autodesk", "Apps") render immediately — static strings.
+- "Password requested" badge appears **between** the masked value and the edit icon.
+- Edit icon remains visible and interactive — the moderator can still open the drawer.
 
-### 4.7 Kid Account Detail — Password Requested
+### 4.6 Delete Account Confirmation
 
-- Password row shows "Password requested" badge between masked value and edit icon.
-- Badge: blue pill (`status-color/info/default`, #1278AF), white text.
-- Edit icon remains visible and interactive.
-- No other row is affected.
+Triggered by clicking "Delete Account":
 
-### 4.8 Delete Account Confirmation
-
-Triggered when the moderator clicks "Delete Account":
-
-- A confirmation modal appears.
 - Modal title: `"Permanently delete account?"`
 - Modal body: `"This will permanently delete [username]'s account and all associated data. This cannot be undone."`
-- Modal actions: `"Delete"` (contained, destructive) | `"Cancel"` (outlined).
-- On confirm: account deleted, moderator redirected to `/supervision/user-management` with a success toast.
-- On cancel: modal closes, focus returns to "Delete Account" button.
+- Actions: `"Delete"` (contained, destructive) | `"Cancel"` (outlined)
+- On confirm: account deleted via API → redirect to `/supervision/user-management` → success toast: `"Account deleted"`
+- On cancel: modal closes, focus returns to "Delete Account" button
 
-### 4.9 Password Drawer — Empty (initial open)
+### 4.7 Password Drawer — States
 
-Triggered when moderator clicks the edit icon in the Password row:
+**Initial open:** "Set password" field empty and focused. "Save" disabled.
 
-- Screen 2 is dimmed with a 50% black overlay.
-- 360px panel slides in from the right.
-- Panel title: "Password".
-- "Set password" field is empty and focused.
-- "Save" button is disabled until all requirements are met and both fields are filled.
+**In progress:** Each password requirement is checked in real time as the moderator types. `Circle` icon fills per met requirement. "Reenter password" field stays empty until the moderator tabs to it.
 
-### 4.10 Password Drawer — In Progress
+**Validation error on Save:**
+- Passwords don't match → inline error `"Passwords do not match"` below "Reenter password" field
+- Unmet requirement → that requirement item highlighted in error state; no generic error shown
 
-- As the moderator types in "Set password", each password requirement is checked in real time.
-- `Circle` icon fills/checks for each met requirement.
-- "Reenter password" field remains empty until the moderator tabs to it.
+**Save success:** Drawer closes. Focus returns to the password edit icon. If "Password requested" badge was present, it is **removed immediately** — no page reload.
 
-### 4.11 Password Drawer — Validation Error
-
-- If the moderator clicks "Save" with passwords that do not match: inline error appears below "Reenter password".
-- If the moderator clicks "Save" with an unmet requirement: the unmet requirement items are highlighted in error state.
-
-### 4.12 Password Drawer — Save Success
-
-- Password is saved via API.
-- Drawer closes.
-- Focus returns to the edit icon in the Password row.
-- If "Password requested" badge was visible, it is removed immediately.
-- No page reload required.
-
-### 4.13 Password Drawer — Cancelled
-
-- Drawer closes on clicking "Cancel" or the × button.
-- No changes are saved.
-- Focus returns to the edit icon in the Password row.
-- Password row state is unchanged.
+**Cancelled (× or Cancel):** Drawer closes. No changes saved. Focus returns to password edit icon. Password row unchanged.
 
 ---
 
@@ -551,15 +383,13 @@ And if a "Password requested" badge was present it is removed immediately withou
 
 ### 6.10 WCAG 2.2 AA — Additional Criteria
 
-The following criteria are new in WCAG 2.2 and must be verified by the `adsk:accessibility-audit` skill after build.
-
 - [ ] **2.4.11 Focus Appearance** — All keyboard focus indicators have a minimum area of 2 CSS pixels around the component perimeter, and sufficient contrast (≥3:1) between focused and unfocused states. Applies to all interactive elements: buttons, links, checkboxes, inputs, `IconButton`, tabs.
-- [ ] **2.5.8 Target Size (Minimum)** — All interactive targets (buttons, checkboxes, row forward arrows, edit icons, pagination controls, close button) are at least 24×24 CSS pixels. Where the target itself is smaller, the spacing around it brings the total to 24×24.
-- [ ] **3.3.8 Accessible Authentication** — The password change flow must not require solving a cognitive function test (e.g. CAPTCHA, puzzle) as the sole means of authentication. The inline requirements list is informational — not a cognitive test — and is compliant.
+- [ ] **2.5.8 Target Size (Minimum)** — All interactive targets are at least 24×24 CSS pixels. Where the target itself is smaller, spacing around it brings the total to 24×24.
+- [ ] **3.3.8 Accessible Authentication** — The password change flow must not require solving a cognitive function test. The inline requirements list is informational — not a cognitive test — and is compliant.
 
 ---
 
-## 7. Editorial Checks
+## 7. Editorial
 
 All strings below are final. Do not alter casing, punctuation, or phrasing without a spec change.
 
@@ -572,21 +402,12 @@ All strings below are final. Do not alter casing, punctuation, or phrasing witho
 | Primary nav — tab 2 | `Activity tracking` | Placeholder — render as inert, no route |
 | Primary nav — tab 3 | `Notification` | Placeholder — render as inert, no route |
 
-### 7.2 User Management — Page Copy
+### 7.2 User Management — Non-Obvious Copy Rules
 
-| Location | String | Notes |
-|---|---|---|
-| Breadcrumb — first crumb | Home icon only (no text) | |
-| Breadcrumb — current | `User management` | Not a link on this screen |
-| Page heading | `User management` | Sentence case |
-| View tabs | `By accounts` / `By product` | Sentence case |
-| Action bar — selection count | `{n} selected` | e.g. `0 selected`, `3 selected` |
-| Action bar — delete button | `Delete user` | Sentence case |
-| Table column — user | `User ({n})` | e.g. `User (98)` — total count in parentheses |
-| Table column — last active | `Last active` | Sentence case |
-| Table column — status | `Status` | |
-| Empty state — heading | `You have no child user linked` | `headline-small` |
-| Empty state — body | `There is no record of child that's linked to your Autodesk account.` | `body-copy-medium`. Full stop at end. |
+- View tabs render as `By accounts` / `By product` (sentence case). See §2 gap note for "Pending approval".
+- Table column heading: `User ({n})` — total count in parentheses, e.g. `User (98)`.
+- Selection count: `{n} selected` — e.g. `0 selected`, `3 selected`.
+- Empty state body ends with a full stop: `"There is no record of child that's linked to your Autodesk account."`
 
 ### 7.3 Status Badge Labels
 
@@ -597,41 +418,25 @@ All strings below are final. Do not alter casing, punctuation, or phrasing witho
 | Account in good standing | `Active` | success (green) |
 | Account suspended or dormant | `Inactive` | default (no fill) |
 
-### 7.4 Kid Account Detail — Page Copy
+### 7.4 Kid Account Detail — Non-Obvious Copy Rules
 
-| Location | String | Notes |
-|---|---|---|
-| Breadcrumb — second crumb | `User management` | Link — matches nav tab label exactly |
-| Breadcrumb — current | `[username]` | Dynamic, lowercase as stored, no transformation |
-| Last active | `Last active [Mon DD, YYYY]` | Example: `Last active Aug 30, 2027`. Abbreviated month. No ordinal suffix. |
-| Delete button | `Delete Account` | Title case — both words capitalised |
-| Card heading | `Sign in with Autodesk` | Sentence case. "Autodesk" is proper noun. |
-| Card description | `Manage your child's username and password for signing in to Autodesk sites. Changes apply across all sites.` | Two sentences. Apostrophe in "child's" is a right single quotation mark ('), not a straight apostrophe. |
-| Username row label | `Username` | Bold weight |
-| Username sub-label | `(required)` | Regular weight, lower case, in parentheses |
-| Password row label | `Password` | Bold weight |
-| Password sub-label | `(required)` | Regular weight, lower case |
-| Password badge | `Password requested` | Sentence case. Not "Password Requested". |
-| Apps card heading | `Apps` | Short title — do not use "Applications" |
-| Apps table column — app | `Application` | Title case |
-| Apps table column — date | `Last use date` | Sentence case |
-| Apps table — no usage | `Never` | Shown in Last use date cell when no usage recorded |
+- Delete button: `Delete Account` — **title case** (both words capitalised), unlike `Delete user` which is sentence case.
+- Card description: apostrophe in `child's` is a **right single quotation mark** (`'`), not a straight apostrophe.
+- Breadcrumb current crumb: `[username]` rendered **exactly as stored**, no transformation.
+- Last active format: `Last active Aug 30, 2027` — abbreviated month, no ordinal suffix.
 
 ### 7.5 Password Drawer Copy
 
 | Location | String | Notes |
 |---|---|---|
 | Panel title | `Password` | Single word |
-| Instruction text | `A string of at least 10 characters that includes numbers and letters.` | 10 characters confirmed. Update Figma instruction text to match. |
-| Set password label | `Set password` | Sentence case |
-| Reenter password label | `Reenter password` | Sentence case. "Reenter" — one word, no hyphen. |
+| Instruction text | `A string of at least 10 characters that includes numbers and letters.` | **10 characters** — Figma currently says "8" (not yet corrected) |
+| Reenter password label | `Reenter password` | **One word, no hyphen** |
 | Requirements heading | `A password must include:` | Followed by a list |
 | Requirement 1 | `Minimum of 10 characters` | |
 | Requirement 2 | `At least 1 uppercase and lowercase letter` | |
 | Requirement 3 | `At least 1 symbol` | |
 | Requirement 4 | `At least 1 number` | |
-| Save button | `Save` | |
-| Cancel button | `Cancel` | |
 
 ### 7.6 Error Messages
 
@@ -651,141 +456,29 @@ All strings below are final. Do not alter casing, punctuation, or phrasing witho
 | Modal | Title | Body |
 |---|---|---|
 | Delete account (single) | `Permanently delete account?` | `This will permanently delete [username]'s account and all associated data. This cannot be undone.` |
-| Delete user(s) (bulk) | — | Not implemented in this release. "Delete user" button is a placeholder. |
 
 ---
 
-## 8. Weave Brand Component Checks
+## 8. Performance
 
-### 8.1 Import Sources
+### 8.1 Data Fetching
 
-All icons must come from `@weave-brand/icon`, wrapped in MUI `SvgIcon`. `@mui/icons-material` is not permitted.
-
-```tsx
-// Correct
-import { SvgIcon } from "@mui/material";
-import { Search, Edit, Globe, CartFull, Home, Forward, Cross, Visible, Circle } from "@weave-brand/icon";
-import { CaretLeft, CaretRight } from "@weave-brand/icon/ui-controls";
-import { UserInsights } from "@weave-brand/icon/pictograms"; // empty state pictogram — no SvgIcon wrapper
-
-// Incorrect
-import SearchIcon from "@mui/icons-material/Search";
-```
-
-### 8.2 Typography Variant Bindings
-
-| Text usage | Component + variant |
-|---|---|
-| Page headings (User management, kidusername) | `<Typography variant="headline-larger">` |
-| Last active date | `<Typography variant="caption">` |
-| Card section heading | `<Typography variant="headline-large">` |
-| Panel title (drawer) | `<Typography variant="headline-small">` |
-| Card description | `<Typography variant="body-copy-medium">` |
-| Instruction text (drawer) | `<Typography variant="body-copy-small">` |
-| Row label (bold) | `<Typography variant="headline-smaller">` |
-| Row sub-label "(required)" | `<Typography variant="body-copy-small">` |
-| Row value | `<Typography variant="body-copy-medium">` |
-| Badge label | Inline: `label-12\|14-semi-bold` (12px semi-bold, 14px line-height) |
-| Selection count | `<Typography variant="body-copy-medium">` |
-
-### 8.3 Button Usage
-
-- [ ] "Delete Account" and "Delete user": `<Button variant="outlined" size="medium">`.
-- [ ] "Save" (drawer): `<Button variant="contained" size="medium">` — full width.
-- [ ] "Cancel" (drawer): `<Button variant="outlined" size="medium">` — full width.
-- [ ] Pagination prev/next: `<IconButton variant="quiet" size="small">`.
-- [ ] No `<div>` or `<a>` used as a button substitute.
-
-### 8.4 Link Usage
-
-- [ ] "User management" breadcrumb (Screen 2/3): `<Link href="..." underline="hover">` from `@mui/material`.
-- [ ] Row forward arrow: `<IconButton component="a" variant="quiet" size="small">` — renders as an anchor element for navigation semantics while using the quiet icon button affordance.
-- [ ] No raw `<a>` used for styled text links.
-
-### 8.5 Form Input Usage (Drawer)
-
-- [ ] `SetPasswordInput` implemented as `FormControl` + `Input` (not `TextField`) — per Weave Brand rules.
-- [ ] `Reenter password` field: `FormControl` + `Input` (not `TextField`).
-- [ ] Show/hide toggle: `IconButton variant="quiet"` inside `InputAdornment position="end"`.
-
-### 8.6 Divider Usage
-
-- [ ] Horizontal separators: Weave Brand `horizontal` divider.
-- [ ] Vertical separators: Weave Brand `vertical` divider.
-- [ ] No `<hr>` or raw `border-bottom` CSS used for dividers.
-
-### 8.7 Design Token Bindings
-
-| Visual property | Token | Resolved value |
-|---|---|---|
-| Page background | `tint/slate.100` | #F9F9F9 |
-| Universal header background | `background-color/brand` | #000000 |
-| Primary nav background | `background-color/surface/300` | #000000 |
-| Active nav tab background | `background-color/ghost/activated/default` | rgba(255,255,255,0.1) |
-| Active nav tab top border | `background-color/brand` (white) | #FFFFFF |
-| Header/nav text | `text-color/heavy/default` | #FFFFFF |
-| Header bottom border | `border-color/divider/heavy` | #808080 |
-| Card background | `background-color/surface/100` | #FFFFFF |
-| Card border | `border-color/divider/medium` | rgba(0,0,0,0.2) |
-| Body text | `text-color/on-background` | #000000 |
-| Muted / visited text | `text-color/link/visited` | #666666 |
-| Link default | `text-color/link/default` | #000000 |
-| Page avatar (child) | `color/blue/700/100` | Confirmed — passes AA (≥4.5:1 on white) |
-| Moderator avatar (header) | `color/iris/500/100` | #5F60FF |
-| Avatar initials text | `text-color/on-dark` | #FFFFFF |
-| Password requested badge background | `status-color/info/default` | #1278AF |
-| Badge text | `text-color/on-dark` | #FFFFFF |
-| Badge border radius | `border-radius/pill` | 1000px |
-| Overlay (drawer backdrop) | `color/black/50` | rgba(0,0,0,0.5) |
-| Drawer panel background | `tint/slate.100` | #F9F9F9 |
-| Panel header background | `background-color/surface/100` | #FFFFFF |
-| Panel header border | `border-color/divider/light` | #E5E5E5 |
-| Search field background | `background-color/neutral/low/default` | rgba(204,204,204,0.2) |
-| Search border radius | `border-radius/8` | 8px |
-| Spacing — page body gap | `spacing/l` | 24px |
-| Spacing — page body gap (small) | `spacing/m` | 16px |
-
----
-
-## 9. Performance Checks
-
-### 9.1 Asset Loading
-
-- [ ] All icons are inline SVG via `SvgIcon` — no PNG or external icon requests.
-- [ ] Autodesk logo in Universal Header is SVG — no raster image asset.
-
-### 9.2 Data Fetching
-
-- [ ] User Management: child accounts are fetched client-side after navigation. Page size and pagination controlled server-side.
+- [ ] User Management: child accounts fetched client-side after navigation. Page size and pagination controlled server-side.
 - [ ] Kid Account Detail: username and password status fetched after navigation. Badge state is part of the credential response — not a separate call.
 - [ ] Page skeletons render within 100ms of navigation; data populates as responses resolve.
 - [ ] Password save: single API call — no re-fetch of the full page on success.
 
-### 9.3 Layout Stability
+### 8.2 Layout Stability
 
 - [ ] Table rows reserve fixed height while loading — no layout shift as data populates.
 - [ ] Page avatar container has explicit `width: 32px; height: 32px` before data loads.
 - [ ] Artifakt Element font is preloaded via `<link rel="preload">` to prevent text layout shift.
 - [ ] "Password requested" badge: reserve space or confirm badge is always present/absent at first paint to avoid CLS.
-- [ ] Password drawer: enter/exit animation does not cause reflow of the background page content.
+- [ ] Password drawer enter/exit animation does not cause reflow of the background page content.
 
-### 9.4 Interaction Responsiveness
+### 8.3 Interaction Responsiveness
 
 - [ ] Row click (forward arrow) navigates within 100ms — no visible delay.
 - [ ] Password drawer opens within 100ms of clicking the edit icon.
 - [ ] "Save" shows a loading/disabled state within 100ms of click while API call is in flight.
 - [ ] Requirement checklist updates are synchronous with typing — no debounce delay visible to the user.
-
----
-
-## 10. Open Questions
-
-| # | Question | Owner | Status |
-|---|---|---|---|
-| 1 | ~~`color/blue/500/100` page avatar fails WCAG AA. Use darker shade?~~ **Resolved:** use a darker blue token. Design to confirm exact token name (e.g. `color/blue/700/100`). | Design | Resolved |
-| 2 | ~~Badge on password save — disappear immediately or on reload?~~ **Resolved:** removed immediately client-side on successful save. | Design | Resolved |
-| 3 | ~~Breadcrumb username casing?~~ **Resolved:** render exactly as stored, no transformation. | Design | Resolved |
-| 4 | ~~"Activity tracking" and "Notification" tabs — in scope?~~ **Resolved:** placeholder tabs for a future iteration. Render as inert — no routes or content. | Product | Resolved |
-| 5 | ~~Drawer instruction text says "8 characters" but requirements list says "10". Which is authoritative?~~ **Resolved:** 10 characters, per the reference site. Update Figma instruction text to match. | Design | Resolved |
-| 6 | ~~Empty state for User Management: what copy and illustration?~~ **Resolved:** per Figma node [121:30174](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=121-30174&m=dev) — `UserInsights` pictogram, heading "You have no child user linked", body "There is no record of child that's linked to your Autodesk account." | Design | Resolved |
-| 7 | ~~Bulk delete modal: list usernames or just the count?~~ **Resolved:** bulk deletion is not implemented in this release. "Delete user" button is a UI placeholder — clicking it has no effect. | Product | Resolved |
