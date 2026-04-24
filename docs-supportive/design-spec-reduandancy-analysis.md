@@ -1,6 +1,6 @@
 # Design Spec Redundancy Analysis — COPPA Supervision Center
 
-**Reviewed against:** `docs/spec-design.md` (last updated 2026-04-10)  
+**Reviewed against:** `docs/xd-design.md` (last updated 2026-04-10)  
 **Sources of truth compared:** Figma file `lEKAg7khZrmq1Dwa2PduKH`, Weave Brand docs, `CLAUDE.md`
 
 ---

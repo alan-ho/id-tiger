@@ -87,7 +87,7 @@ No TypeScript-specific packages (`@types/*`, `tsconfig.json`) are added.
 
 ## Session 2026-04-18 — Spec Alignment Findings
 
-The following supersede or correct earlier decisions where design spec (`docs/spec-design.md`) conflicts with prior research.
+The following supersede or correct earlier decisions where design spec (`docs/xd-design.md`) conflicts with prior research.
 
 ### Status Badge Colors (CORRECTION)
 

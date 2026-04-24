@@ -16,7 +16,7 @@
 | File | Faction | Status |
 |------|---------|--------|
 | `docs/prd-children-moderation-app.md` | PM | Draft |
-| `docs/spec-design.md` | Design | Draft |
+| `docs/xd-design.md` | Design | Draft |
 
 ## Three-Faction Model
 

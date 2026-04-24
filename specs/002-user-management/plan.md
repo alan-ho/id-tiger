@@ -5,7 +5,7 @@
 
 ## Summary
 
-Correct and complete the static User Management view components to match the design spec (`docs/spec-design.md`) and the updated feature spec. All six React components exist; this plan is a **spec-compliance correction pass** — no new files, no new dependencies. The work corrects: status badge colours (wrong tokens), avatar background colour (wrong token), forward arrow semantics (plain icon → anchor `IconButton`), Tabs configuration (missing `variant="scrollable"`), breadcrumb accessibility structure, and page `<title>`.
+Correct and complete the static User Management view components to match the design spec (`docs/xd-design.md`) and the updated feature spec. All six React components exist; this plan is a **spec-compliance correction pass** — no new files, no new dependencies. The work corrects: status badge colours (wrong tokens), avatar background colour (wrong token), forward arrow semantics (plain icon → anchor `IconButton`), Tabs configuration (missing `variant="scrollable"`), breadcrumb accessibility structure, and page `<title>`.
 
 ## Technical Context
 

@@ -103,7 +103,7 @@ All features are specified in three independent documents before implementation 
 | Faction     | Document                   | Owner       | Focus                                                              |
 |-------------|----------------------------|-------------|--------------------------------------------------------------------|
 | PM          | `docs/prd-*.md`            | Product     | Business requirements, user stories, acceptance criteria, MVP scope |
-| Design      | `docs/spec-design.md`      | Design      | UX flows, component specs, copy, accessibility, language support   |
+| Design      | `docs/xd-design.md`      | Design      | UX flows, component specs, copy, accessibility, language support   |
 | Engineering | `specs/*/plan.md`          | Engineering | API contracts (mock & real), data models, compliance, performance  |
 
 Conflicts between faction specs are adjudicated in the Living Spec step before tasks are
@@ -121,7 +121,7 @@ Domain checks by faction:
 The following gates MUST be passed in order. All are blockers — no gate may be skipped.
 
 1. **Editorial checks** — run `mcp__editorial__check_text` against all copy in the design
-   spec before living spec consolidation. All strings in `docs/spec-design.md` §7 are final
+   spec before living spec consolidation. All strings in `docs/xd-design.md` §7 are final
    and MUST pass without alteration of casing, punctuation, or phrasing.
 2. **E2E tests** — Playwright tests derived from Given/When/Then acceptance criteria in the
    PRD and design spec MUST all pass after build.
