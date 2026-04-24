@@ -12,6 +12,15 @@
                                                   └──────────┘
 ```
 
+> **Phases are not strictly sequential**
+>
+> The phase diagram shows the logical order of *outputs*, not the order of *work*. In practice:
+> - XD and Eng can start exploring and asking questions as soon as a rough PRD exists — they don't wait for "stable"
+> - Engineering can scaffold infrastructure, make technology decisions, and draft architecture constraints while the PRD is still being written
+> - The PRD doesn't need to be complete to unblock parallel work — it needs to be *directionally clear*
+>
+> The gates between phases exist to prevent *committing to the wrong direction*, not to serialize the team. Move fast in parallel; use the gates to catch drift before it compounds.
+
 ## Requirement IDs
 
 Every requirement across source documents gets a prefixed ID for cross-document traceability:
