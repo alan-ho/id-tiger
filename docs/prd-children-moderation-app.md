@@ -77,10 +77,10 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - List must be sortable and searchable
 
 **Acceptance Criteria:**
-- Given I am a logged-in moderator, when I land on the dashboard, then I see all child accounts I manage
-- Given a child has triggered a password reset request, when I view the list, then their status shows as "Password requested"
-- Given the list is populated, when I sort by any column, then the list reorders correctly
-- Given the list is populated, when I search by username, then only matching accounts are displayed
+- `PRD-001` Given I am a logged-in moderator, when I land on the dashboard, then I see all child accounts I manage
+- `PRD-002` Given a child has triggered a password reset request, when I view the list, then their status shows as "Password requested"
+- `PRD-003` Given the list is populated, when I sort by any column, then the list reorders correctly
+- `PRD-019` Given the list is populated, when I search by username, then only matching accounts are displayed
 
 ---
 
@@ -97,10 +97,10 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - Moderators cannot edit the username
 
 **Acceptance Criteria:**
-- Given I am on the user list, when I click a user, then I am taken to their detail page
-- Given I am on the detail page, then I can see all apps the child accesses and when they last used each
-- Given a child has never accessed an application, when I view the detail page, then the Last Use Date for that application shows "Never"
-- Given I am on the detail page, when I click Reset Password, then the password reset flow is initiated
+- `PRD-004` Given I am on the user list, when I click a user, then I am taken to their detail page
+- `PRD-005` Given I am on the detail page, then I can see all apps the child accesses and when they last used each
+- `PRD-020` Given a child has never accessed an application, when I view the detail page, then the Last Use Date for that application shows "Never"
+- `PRD-006` Given I am on the detail page, when I click Reset Password, then the password reset flow is initiated
 
 ---
 
@@ -119,11 +119,11 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - All password reset events must be logged with timestamp and moderator identity (audit trail)
 
 **Acceptance Criteria:**
-- Given I click Reset Password, then a drawer opens with "Set password" and "Reenter password" fields
-- Given I enter mismatched passwords, then inline validation prevents submission and shows an error
-- Given I submit a valid password, then the reset is applied, the user's status reverts to Active, and a handoff dialog appears
-- Given I complete the flow, then the reset event is logged with my identity and a timestamp
-- Given I close the drawer without submitting, then no reset occurs and the user's status is unchanged
+- `PRD-007` Given I click Reset Password, then a drawer opens with "Set password" and "Reenter password" fields
+- `PRD-008` Given I enter mismatched passwords, then inline validation prevents submission and shows an error
+- `PRD-010` Given I submit a valid password, then the reset is applied, the user's status reverts to Active, and a handoff dialog appears
+- `PRD-012` Given I complete the flow, then the reset event is logged with my identity and a timestamp
+- `PRD-018` Given I close the drawer without submitting, then no reset occurs and the user's status is unchanged
 
 ---
 
@@ -141,10 +141,10 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 - A header checkbox must allow selecting all visible users at once
 
 **Acceptance Criteria:**
-- Given I am on the list view, then each row has a checkbox and "Delete user" is disabled
-- Given I select one or more users, then the action bar shows "[n] selected" and "Delete user" becomes enabled
-- Given I click "Delete user", then nothing happens — no dialog, no deletion
-- Given I select all users via the header checkbox, then all visible users are selected
+- `PRD-014` Given I am on the list view, then each row has a checkbox and "Delete user" is disabled
+- `PRD-015` Given I select one or more users, then the action bar shows "[n] selected" and "Delete user" becomes enabled
+- `PRD-017` Given I click "Delete user", then nothing happens — no dialog, no deletion
+- `PRD-021` Given I select all users via the header checkbox, then all visible users are selected
 
 ---
 
@@ -152,23 +152,27 @@ This PRD defines a **Moderator Dashboard** — a web interface that gives modera
 
 | ID | Requirement |
 |---|---|
-| FR-001 | System MUST display all child accounts associated with the logged-in moderator upon login |
-| FR-002 | System MUST display Username, Status, and Last Active for each account in the list |
-| FR-003 | System MUST support sorting and searching within the account list |
-| FR-004 | System MUST allow moderators to navigate to a per-user detail page from the list |
-| FR-005 | System MUST display all applications a child user has access to, with Last Use Date per app — shown as "Never" if the application has never been accessed |
-| FR-006 | System MUST allow moderators to initiate a password reset from the detail page |
-| FR-007 | System MUST open a drawer with "Set password" and "Reenter password" fields when a password reset is initiated |
-| FR-008 | System MUST validate that both password fields match before allowing submission |
-| FR-009 | System MUST enforce minimum password strength requirements with inline validation |
-| FR-010 | System MUST automatically update the user's status to Active upon successful password reset |
-| FR-011 | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
-| FR-012 | System MUST log all password reset events with timestamp and moderator identity |
-| FR-013 | System MUST comply with COPPA data handling requirements throughout |
-| FR-014 | System MUST display a checkbox on each row in the list view |
-| FR-015 | System MUST display a "Delete user" button in the action bar, enabled only when ≥1 user is selected |
-| FR-016 | System MUST display the count of selected users in the action bar (e.g. "2 selected") |
-| FR-017 | Clicking "Delete user" MUST be a no-op for this POC — no action, no dialog, no deletion |
+| `PRD-001` | System MUST display all child accounts associated with the logged-in moderator upon login |
+| `PRD-002` | System MUST display Username, Status, and Last Active for each account in the list |
+| `PRD-003` | System MUST support sorting within the account list |
+| `PRD-019` | System MUST support searching within the account list |
+| `PRD-004` | System MUST allow moderators to navigate to a per-user detail page from the list |
+| `PRD-005` | System MUST display all applications a child user has access to, with Last Use Date per app |
+| `PRD-020` | System MUST display "Never" as the Last Use Date for any application the child has never accessed |
+| `PRD-021` | System MUST provide a header checkbox that selects all visible users at once |
+| `PRD-006` | System MUST allow moderators to initiate a password reset from the detail page |
+| `PRD-007` | System MUST open a drawer with "Set password" and "Reenter password" fields when a password reset is initiated |
+| `PRD-008` | System MUST validate that both password fields match before allowing submission |
+| `PRD-009` | System MUST enforce minimum password strength requirements with inline validation |
+| `PRD-010` | System MUST automatically update the user's status to Active upon successful password reset |
+| `PRD-011` | System MUST display a handoff dialog after successful reset, informing the moderator they are responsible for sharing the new password with the child |
+| `PRD-012` | System MUST log all password reset events with timestamp and moderator identity |
+| `PRD-013` | System MUST comply with COPPA data handling requirements throughout |
+| `PRD-014` | System MUST display a checkbox on each row in the list view |
+| `PRD-015` | System MUST display a "Delete user" button in the action bar, enabled only when ≥1 user is selected |
+| `PRD-016` | System MUST display the count of selected users in the action bar (e.g. "2 selected") |
+| `PRD-017` | Clicking "Delete user" MUST be a no-op for this POC — no action, no dialog, no deletion |
+| `PRD-018` | System MUST leave the user's status unchanged and perform no password reset when the password drawer is closed without submitting |
 
 ---
 

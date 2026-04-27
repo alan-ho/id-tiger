@@ -10,7 +10,7 @@
 | Figma branch | — |
 | Last updated / By | 2026-04-18 / Alan Ho |
 | Change summary | Initial draft |
-| Linked PRD IDs | FR-001 – FR-010, FR-014 – FR-017 |
+| Linked PRD IDs | PRD-001 – PRD-010, PRD-014 – PRD-021 |
 | Linked architecture doc | Not yet authored |
 | Linked Figma file | [COPPA — Moderator's Platform](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform) |
 
@@ -45,7 +45,7 @@ The moderator maps to Autodesk's **End User persona** — the doer, on tight dea
 - Username editing → [prd-children-moderation-app.md](prd-children-moderation-app.md) · §4
 - Account status changes (Suspend/Activate) → [prd-children-moderation-app.md](prd-children-moderation-app.md) · §4
 - Bulk account actions → [prd-children-moderation-app.md](prd-children-moderation-app.md) · §4
-- "Delete user" bulk action: button renders but is a no-op for this POC → [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-017
+- "Delete user" bulk action: button renders but is a no-op for this POC → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-017
 - **"Delete Account" on Kid Account Detail:** Button renders but is a no-op for this release — no confirmation modal, no API call. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · §4
 
 ### Language support
@@ -136,7 +136,7 @@ Visual appearance for all states is in Figma. This matrix records the behavioral
 | XD-S01 | User Management — Loading | Page navigation; data pending | Action bar renders immediately; skeletons for heading and table rows; "Delete user" disabled | — | Await data → XD-S02 | [23:14271](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14271&m=dev) |
 | XD-S02 | User Management — Default | Data returned; no selection | Full table; pagination if needed | `"0 selected"` | Row click → Kid Account Detail | [23:14271](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14271&m=dev) |
 | XD-S03 | User Management — Empty | No linked accounts | No table, no action bar, no pagination; UserInsights pictogram | `"You have no child user linked"` | — | [121:30174](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=121-30174&m=dev) |
-| XD-S04 | User Management — Rows selected | ≥1 checkbox checked | Count updates; "Delete user" appears enabled (no-op — see FR-017) | `"{n} selected"` | — | — |
+| XD-S04 | User Management — Rows selected | ≥1 checkbox checked | Count updates; "Delete user" appears enabled (no-op — see PRD-017) | `"{n} selected"` | — | — |
 | XD-S05 | Kid Account Detail — Loading | Navigation with `:userId`; data pending | Card headings render immediately; skeletons for all dynamic values; "Delete Account" disabled | — | Await data → XD-S06 | [23:14272](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14272&m=dev) |
 | XD-S06 | Kid Account Detail — Default | Data returned; no active badge | Full detail view; password row shows 14 asterisks | — | Click edit icon → XD-S09 | [23:14272](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14272&m=dev) |
 | XD-S07 | Kid Account Detail — Password Requested | `password_requested` status in credential response | "Password requested" badge between masked value and edit icon; edit icon remains interactive | `Password requested` | Click edit icon → XD-S09 | [23:14272](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14272&m=dev) |
@@ -155,8 +155,8 @@ Visual appearance for all states is in Figma. This matrix records the behavioral
 - **"Reenter password" field (XD-S10):** Stays empty until the moderator tabs to it — do not pre-fill or auto-focus.
 - **Requirement checklist updates (XD-S10):** Synchronous with typing — no debounce delay.
 - **Delete Account button (XD-S08):** Renders in the page header but is a no-op — clicking it has no effect and opens no modal.
-- **Save success badge removal (XD-S12):** If a "Password requested" badge was present (XD-S07), it is removed immediately on save success without a page reload. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-010
-- **⚠️ Gap — handoff dialog after save (XD-S12):** PRD FR-011 requires a handoff dialog after successful password reset informing the moderator they are responsible for sharing the new password with the child. This state is not yet specified in this XDD. Resolve with PM before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-011
+- **Save success badge removal (XD-S12):** If a "Password requested" badge was present (XD-S07), it is removed immediately on save success without a page reload. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-010
+- **⚠️ Gap — handoff dialog after save (XD-S12):** PRD-011 requires a handoff dialog after successful password reset informing the moderator they are responsible for sharing the new password with the child. This state is not yet specified in this XDD. Resolve with PM before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
 
 ---
 
@@ -261,7 +261,7 @@ And the table shows child accounts with columns: checkbox, user, last active, st
 And the "0 selected" count is shown
 And "Delete user" is disabled
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-001, FR-002, FR-014, FR-015, FR-016
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-001, PRD-002, PRD-014, PRD-015, PRD-016
 
 ```
 XD-AC-02
@@ -269,7 +269,7 @@ Given the table has loaded
 Then each row shows an avatar with the child's initials, the username, last active date, and a status badge
 And each row has a forward arrow (→) that navigates to /supervision/user-management/:userId on click
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-001, FR-004
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-001, PRD-004
 
 ```
 XD-AC-03
@@ -277,7 +277,7 @@ Given the moderator checks one or more row checkboxes
 Then the "{n} selected" count updates
 And "Delete user" becomes enabled
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-015, FR-016
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-015, PRD-016
 
 ```
 XD-AC-04
@@ -301,7 +301,7 @@ And clicking a page number loads that page of results
 
 ### XD-AC-06 – XD-AC-07 · User Management — delete user
 
-> **Note:** The "Delete user" button is a UI placeholder in this release. Multi-selection and bulk deletion are not implemented. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-017
+> **Note:** The "Delete user" button is a UI placeholder in this release. Multi-selection and bulk deletion are not implemented. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-017
 
 ```
 XD-AC-06
@@ -328,7 +328,7 @@ And "Delete Account" is visible as an outlined button at the far right of the he
 And the "Sign in with Autodesk" card shows username and masked password rows
 And the "Apps" card shows a table listing all apps the child has access to, with a "Last use date" column for each
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-004, FR-005
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-004, PRD-005
 
 ```
 XD-AC-09
@@ -338,7 +338,7 @@ Then each app appears as a row in the Apps table with the app name and the last 
 Given an app the child has access to has never been used
 Then the Last use date cell for that app shows "Never"
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-005
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-005, PRD-020
 
 ```
 XD-AC-10
@@ -376,7 +376,7 @@ And the panel title is "Password"
 And the "Set password" field is focused
 And "Save" is disabled
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-006, FR-007
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-006, PRD-007
 
 ```
 XD-AC-16
@@ -385,6 +385,7 @@ Then the drawer closes
 And focus returns to the password edit icon
 And the password row is unchanged
 ```
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-018
 
 ### XD-AC-17 – XD-AC-20 · Password drawer — validation
 
@@ -393,14 +394,14 @@ XD-AC-17
 Given the moderator types a password that does not meet the minimum requirements
 Then the unmet requirements remain unchecked in the requirements list
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-009
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-009
 
 ```
 XD-AC-18
 Given the moderator types a password that meets all requirements
 Then all four requirement items show a filled/checked state
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-009
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-009
 
 ```
 XD-AC-19
@@ -408,14 +409,14 @@ Given the passwords in "Set password" and "Reenter password" do not match and th
 Then the error "Passwords do not match" appears below "Reenter password"
 And the password is not saved
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-008
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-008
 
 ```
 XD-AC-20
 Given all requirements are met and both fields match
 Then "Save" becomes enabled
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-008, FR-009
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-008, PRD-009
 
 ### XD-AC-21 · Password drawer — save
 
@@ -428,9 +429,9 @@ And focus returns to the password edit icon
 And the password row continues to show masked asterisks
 And if a "Password requested" badge was present it is removed immediately without a page reload
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-010
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-010
 
-> **⚠️ Gap — handoff dialog (FR-011):** The PRD requires a handoff dialog after successful reset informing the moderator they are responsible for sharing the new password with the child. This is not yet specified in this XDD. Resolve before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-011
+> **⚠️ Gap — handoff dialog (PRD-011):** The PRD requires a handoff dialog after successful reset informing the moderator they are responsible for sharing the new password with the child. This is not yet specified in this XDD. Resolve before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
 
 ---
 
@@ -483,7 +484,7 @@ All strings below are final. Do not alter casing, punctuation, or phrasing witho
 | Requirement 3 | `At least 1 symbol` | |
 | Requirement 4 | `At least 1 number` | |
 
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · FR-009
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-009
 
 ### 8.6 Error messages
 
