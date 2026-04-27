@@ -1,5 +1,33 @@
 # Spec-Driven Development Process
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Why markdown + git](#why-markdown--git)
+  - [The AI unlock](#the-ai-unlock)
+  - [Version control for specs](#version-control-for-specs)
+  - [The PR review workflow applies to specs](#the-pr-review-workflow-applies-to-specs)
+  - [Industry context](#industry-context)
+- [Requirement IDs](#requirement-ids)
+  - [Cross-referencing](#cross-referencing)
+- [Phase 0 — Kick-off](#phase-0--kick-off)
+- [Phase 1 — PRD (PM)](#phase-1--prd-pm)
+  - [Early consult](#early-consult)
+- [Phase 2 — XD Design + Eng Architecture](#phase-2--xd-design--eng-architecture)
+  - [Revision loops](#revision-loops)
+- [Phase 3 — Cross-Faction Sync](#phase-3--cross-faction-sync)
+- [Phase 4 — Baseline](#phase-4--baseline)
+- [Phase 5 — Spec Breakdown (Engineering)](#phase-5--spec-breakdown-engineering)
+  - [Spec validation](#spec-validation)
+- [Phase 6 — Execution](#phase-6--execution)
+  - [Upstream change policy](#upstream-change-policy)
+  - [Change trigger ownership](#change-trigger-ownership)
+- [Source Documents vs. Specs](#source-documents-vs-specs)
+- [Lifecycle](#lifecycle)
+- [Automation Touchpoints](#automation-touchpoints)
+
+---
+
 ## Overview
 
 ```
@@ -20,6 +48,31 @@
 > - The PRD doesn't need to be complete to unblock parallel work — it needs to be *directionally clear*
 >
 > The gates between phases exist to prevent *committing to the wrong direction*, not to serialize the team. Move fast in parallel; use the gates to catch drift before it compounds.
+
+## Why markdown + git
+
+All SDD source artifacts — `prd.md`, `xd-design.md`, `architecture.md` — are written in plain markdown and stored in git. This is not a stylistic preference. It is what makes the rest of the process work.
+
+### The AI unlock
+
+When all three artifacts are in markdown and git, an AI agent can read, diff, and cross-reference them directly. This enables:
+- **Drift detection** — automatically surface contradictions between the PRD, XD spec, and architecture after baseline
+- **Spec generation** — generate engineering specs traceable to source requirement IDs
+- **Impact analysis** — when a requirement changes, find all affected specs by tracing IDs
+
+None of this works if the PRD lives in Confluence rich text. AI tools struggle with Confluence's macro-heavy format, and there is no machine-readable diff history.
+
+### Version control for specs
+
+Git gives you commit history, diffs, blame, and branching for your specs — the same guarantees you have for code. A Confluence PRD gets edited informally over time with no record of what changed, when, or why. After a PRD-baseline event, git is what makes "frozen" actually mean something.
+
+### The PR review workflow applies to specs
+
+Specs in git can go through pull requests — the same review, approval, and audit trail your team uses for code applies to requirement changes.
+
+### Industry context
+
+Writing specifications in markdown stored in git is an established pattern known as **Docs as Code**. It is the standard practice for developer-centric teams where specs need to stay in sync with implementation — and vice versa.
 
 ## Requirement IDs
 
