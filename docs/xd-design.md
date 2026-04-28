@@ -5,12 +5,12 @@
 | Feature name | COPPA Supervision Center — Moderator account management flow |
 | XDD owner | Alan Ho |
 | Status | Draft |
-| Doc version | 1.0 |
+| Doc version | 1.1 |
 | Figma version | ⚠️ No named version saved — save and update before baselined status |
 | Figma branch | — |
-| Last updated / By | 2026-04-18 / Alan Ho |
-| Change summary | Initial draft |
-| Linked PRD IDs | PRD-001 – PRD-010, PRD-014 – PRD-021 |
+| Last updated / By | 2026-04-28 / Alan Ho |
+| Change summary | PRD alignment pass — resolved PRD-011 (toast + email, no handoff dialog), PRD-012 (audit logging confirmed); added XD-AC-22 (sort), XD-AC-23 (search), XD-AC-24 (select-all); status badge scope reduced to Active and Password requested; Pending approval tab confirmed out of scope |
+| Linked PRD IDs | PRD-001 – PRD-012, PRD-014 – PRD-021 (PRD-013 — COPPA compliance — is a legal/backend concern not specced in this XDD) |
 | Linked architecture doc | Not yet authored |
 | Linked Figma file | [COPPA — Moderator's Platform](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform) |
 
@@ -144,7 +144,7 @@ Visual appearance for all states is in Figma. This matrix records the behavioral
 | XD-S09 | Password Drawer — Initial open | Click edit icon (password row) | Drawer from right; background dimmed; "Set password" focused; "Save" disabled | `Password` (panel title) | Type → XD-S10 | [23:14273](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14273&m=dev) |
 | XD-S10 | Password Drawer — In progress | Typing in "Set password" | Requirements checked in real time; `Circle` icon fills per met requirement | — | All met + match → Save enabled | [23:14273](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=23-14273&m=dev) |
 | XD-S11 | Password Drawer — Validation error | Save clicked; passwords don't match or requirement unmet | Inline error below "Reenter password"; unmet requirement highlighted | `"Passwords do not match"` (mismatch) | Fix input → retry | — |
-| XD-S12 | Password Drawer — Save success | Valid matching password; API success | Drawer closes; "Password requested" badge removed without page reload; focus returns to edit icon | — | → XD-S06 (badge resolved) | — |
+| XD-S12 | Password Drawer — Save success | Valid matching password; API success | Drawer closes; "Password requested" badge removed without page reload; focus returns to edit icon; toast shown; transactional email sent to moderator | `{kidusername} password updated` (toast) | → XD-S06 (badge resolved) | [123:20344](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=123-20344&m=dev) (toast) · [544:100787](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=544-100787&m=dev) (toast copy) · [454:43462](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=454-43462&m=dev) (email) |
 | XD-S13 | Password Drawer — Cancelled | × or Cancel clicked | Drawer closes; no changes saved | — | Focus returns to edit icon → XD-S06 or XD-S07 | — |
 
 ### Interaction rules
@@ -156,7 +156,8 @@ Visual appearance for all states is in Figma. This matrix records the behavioral
 - **Requirement checklist updates (XD-S10):** Synchronous with typing — no debounce delay.
 - **Delete Account button (XD-S08):** Renders in the page header but is a no-op — clicking it has no effect and opens no modal.
 - **Save success badge removal (XD-S12):** If a "Password requested" badge was present (XD-S07), it is removed immediately on save success without a page reload. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-010
-- **⚠️ Gap — handoff dialog after save (XD-S12):** PRD-011 requires a handoff dialog after successful password reset informing the moderator they are responsible for sharing the new password with the child. This state is not yet specified in this XDD. Resolve with PM before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
+- **Save success — toast notification (XD-S12):** On save success, a toast is shown: `"{kidusername} password updated"`. No handoff dialog. PRD-011 resolved as toast pattern — PM confirmed. → [Figma 123:20344](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=123-20344&m=dev) · [Figma 544:100787](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=544-100787&m=dev) · [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
+- **Save success — email notification (XD-S12):** The backend sends a transactional email to the moderator's address (`{moderator_email}`) confirming the password was changed for `{kidusername}`. The moderator is responsible for sharing the new password with the child — this step is not automated in the UI. → [Figma 454:43462](https://www.figma.com/design/lEKAg7khZrmq1Dwa2PduKH/COPPA---Moderator-s-Platform?node-id=454-43462&m=dev) · [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
 
 ---
 
@@ -425,13 +426,15 @@ XD-AC-21
 Given a valid matching password is entered and the moderator clicks "Save"
 Then the API is called to update the password
 And on success the drawer closes
+And a toast notification "{kidusername} password updated" is shown
+And a transactional email notification is sent to the moderator
 And focus returns to the password edit icon
 And the password row continues to show masked asterisks
 And if a "Password requested" badge was present it is removed immediately without a page reload
 ```
-→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-010
+→ [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-010, PRD-011
 
-> **⚠️ Gap — handoff dialog (PRD-011):** The PRD requires a handoff dialog after successful reset informing the moderator they are responsible for sharing the new password with the child. This is not yet specified in this XDD. Resolve before implementation. → [prd-children-moderation-app.md](prd-children-moderation-app.md) · PRD-011
+> **Note — PRD-011 resolved:** PRD-011's handoff requirement is met by the toast notification and transactional email (see interaction rules §5). No handoff dialog is shown. PM confirmed.
 
 ---
 
